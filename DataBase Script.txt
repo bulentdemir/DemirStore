@@ -1,0 +1,100 @@
+CREATE DATABASE DemirStoreDB
+
+USE DemirStoreDB
+
+CREATE TABLE [tblUsers](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Name] [nvarchar](50) NOT NULL,
+	[Surname] [nvarchar](50) NOT NULL,
+	[Email] [nvarchar](60) NOT NULL,
+	[Pswd] [nvarchar](150) NOT NULL,
+	[ConfirmPswd] [nvarchar](150) NULL,
+	[PswdSalt] [nvarchar](150) NULL,
+	[PhoneNumber] [nvarchar](50) NOT NULL,
+	[isVerified] [bit] NULL,
+)
+
+CREATE TABLE [tblCategory](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Name] [nvarchar](50) NOT NULL,
+	[Description] [nvarchar](500) NULL,
+	[PictureLink] [nvarchar](150) NULL,
+)
+
+CREATE TABLE [tblProduct](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Name] [nvarchar](100) NOT NULL,
+	[PictureLink] [nvarchar](100) NULL,
+	[Description] [nvarchar](1000) NULL,
+	[Price] [int] NOT NULL,
+	[Stock] [int] NOT NULL,
+	[CategoryId] [int] NULL,
+	FOREIGN KEY (CategoryId) REFERENCES tblCategory(Id)
+)
+
+CREATE TABLE [tblAddress](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Name] [nvarchar](50) NOT NULL,
+	[Address] [nvarchar](100) NOT NULL,
+	[City] [nvarchar](50) NOT NULL,
+	[Country] [nvarchar](50) NOT NULL,
+	[Zip] [int] NULL,
+	[UserId] [int] NULL,
+	FOREIGN KEY (UserId) REFERENCES tblUsers(Id)
+)
+
+CREATE TABLE [tblOrder](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[AdressId] [int] NOT NULL,
+	[Date] [date] NOT NULL,
+	[isShipped] [bit] NULL,
+	FOREIGN KEY (AdressId) REFERENCES tblAddress(Id)
+)
+CREATE TABLE [tblShoppingCart](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[UserId] [int] NOT NULL,
+	[ProductId] [int] NOT NULL,
+	[Amount] [int] NOT NULL,
+	[TotalPrice] [int] NOT NULL,
+	[OrderId] [int] NULL,
+	FOREIGN KEY (UserId) REFERENCES tblUsers(Id),
+	FOREIGN KEY (ProductId) REFERENCES tblProduct(Id),
+	FOREIGN KEY (OrderId) REFERENCES tblOrder(Id)
+)
+
+INSERT INTO [tblUsers] VALUES ('Bülent', 'Demir', 'bulent.demir@demirstore.site', 'dLdMJaBHIiDdPOsZ5/25cj4tp0WuDbVZeffX8Sb+v1dlfskuov6RUBKnI/TWqCuBodZnqVljZVf9m2sADIdbow==', 'dLdMJaBHIiDdPOsZ5/25cj4tp0WuDbVZeffX8Sb+v1dlfskuov6RUBKnI/TWqCuBodZnqVljZVf9m2sADIdbow==', '100000.GGtCjd+NF+I8zZbfqSnkAZk7D7FNy72gTFT/x6hBl7Ne2w==', '5370234421', 1)
+INSERT INTO [tblUsers] VALUES ('Mehmet', 'Cengiz', 'mehmet.cengiz@demirstore.site', '+aY5HIEi8aX5LI/0eYuVEHCihLbGDqCN14eXCV75EbGYl3/swTMY21tce8nnGTn/YE8wQtHBLoFmW4j5eOJmug==', '+aY5HIEi8aX5LI/0eYuVEHCihLbGDqCN14eXCV75EbGYl3/swTMY21tce8nnGTn/YE8wQtHBLoFmW4j5eOJmug==', '100000.AA2emz7GfWE+b+P+XB9OprI8fMc7xKoFAJdJmzv8Rixf2Q==', '05555555555', 1)
+
+INSERT INTO [tblCategory] VALUES ('Anakartlar', 'Asus Marka Anakartlar', '/img/CategoryImage/6a1343f4-bee0-45bf-a744-cbb624834d5e.jpg')
+INSERT INTO [tblCategory] VALUES ('Ekran Kartlarý', 'Asus Marka Ekran Kartlarý', '/img/CategoryImage/17002217-720f-4047-a410-416b8870509f.jpg')
+INSERT INTO [tblCategory] VALUES ('Monitörler', 'Asus Marka Monitörler', '/img/CategoryImage/e7cafc29-51c2-43fb-980f-1287d364cf69.jpg')
+
+INSERT INTO [tblProduct] VALUES ('ASUS TUF B450-PLUS GAMING AMD B450', '/img/ProductsImage/a000f895-6c21-47ed-901c-8c5cb4085735.jpg', 'AMD B450 ATX oyuncu anakartý, Aura Sync RGB LED aydýnlatma, DDR4 3200MHz desteði, 32Gbps M.2, HDMI 2.0b, Tip-C ve doðal USB 3.1 Gen 2.', 758, 10, 1)
+INSERT INTO [tblProduct] VALUES ('ASUS PRIME B450M-K AMD B450', '/img/ProductsImage/d5ae0248-2d1a-49a5-9ee4-3e14a70ba631.jpg', 'LED aydýnlatma, DDR4 3200MHz desteði, M.2, SATA 6Gbps ve USB 3.1 Gen 2''ye sahip, AMD AM4 mATX anakart', 530, 10, 1)
+INSERT INTO [tblProduct] VALUES ('ASUS PRIME B350M-A AMD B350', '/img/ProductsImage/3fe73d9d-7eac-4ea0-98cb-b02eda11dd94.jpg', 'LED aydýnlatma, DDR4, 32Gb/s M.2, HDMI, SATA 6GB/s ve USB 3.1 ile AMD AM4 ATX anakart', 558, 10, 1)
+INSERT INTO [tblProduct] VALUES ('SUS PRIME H310M-K R2.0 Intel H310', '/img/ProductsImage/54306c1e-a7de-4993-932e-358bc2d90b3f.jpg', 'DDR4 2666MHz, SATA 6Gbps ve USB 3.1 Gen 1 ile Intel LGA-1151 mATX anakart', 462, 10, 1)
+INSERT INTO [tblProduct] VALUES ('ASUS PRIME B360M-K Intel B360', '/img/ProductsImage/77a413d9-cf17-4fc8-aa90-03c1931070bd.jpg', 'LED aydýnlatma, DDR4 2666MHz, M.2 desteði, Intel Optane belleklere hazýr, HDMI, SATA 6Gbps ve USB 3.1 Gen 1 ile Intel LGA-1151 mATX anakart', 583, 5, 1)
+INSERT INTO [tblProduct] VALUES ('ASUS RX570 ROG STRIX 4GB GDDR5 OC 256Bit', '/img/ProductsImage/ade96240-ca97-4f62-8e30-920f388e7fb7.jpg', 'ROG Strix RX570 OC edition 4GB GDDR5 AURA SYNC RGB ve en iyi eSports deneyimi için ekran kartý', 1061, 10, 2)
+INSERT INTO [tblProduct] VALUES ('ASUS RX580 ROG STRIX OC 8GB GDDR5 256Bit', '/img/ProductsImage/6d23acab-4927-444f-b521-e4950e091236.jpg', 'AURA Sync RGB, VR & 4K oyun deneyimi için ROG Strix Radeon RX 580 OC edition 8GB GDDR5', 1843, 10, 2)
+INSERT INTO [tblProduct] VALUES ('ASUS GeForce ROG STRIX RTX2060 GAMING OC GDDR6 6GB 192Bit', '/img/ProductsImage/2a29bf39-9f9c-4db8-8aac-4ac98faa63ee.jpg', 'Yüksek yenileme hýzlarý için güçlü soðutma sistemiyle donatýlan ROG Strix GeForce RTX™ 2060 OC edition 6GB GDDR6', 3350, 9, 2)
+INSERT INTO [tblProduct] VALUES ('ASUS GeForce GTX1660Ti DUAL OC GDDR6 6GB 192Bit', '/img/ProductsImage/398c9f08-3ce8-4dea-82f4-e4f1def271ad.jpg', 'ASUS Dual GeForce® GTX 1660 Ti OC edition 6GB GDDR6, FPS avantajý sunmak için hiç zorlanmadan yüksek yenileme hýzlarýna ulaþýyor', 2582, 10, 2)
+INSERT INTO [tblProduct] VALUES ('ASUS GTX1050 Ti CERBERUS GAMING OC GDDR5 4GB 128Bit ', '/img/ProductsImage/a6e7b88f-dcb1-4733-9da8-018b96410b59.jpg', 'ASUS Cerberus GeForce® GTX 1050 Ti OC Edition 4GB GDDR5 – geliþmiþ güvenilirlik ve performans için sýký testlere tabi tutuldu.', 1130, 8, 2)
+INSERT INTO [tblProduct] VALUES ('ASUS 49" XG49VQ ROG Strix 4 Ms 144 HZ', '/img/ProductsImage/fbf41fe9-cb38-4684-895e-5b013b4c39b7.jpg', 'ROG Strix XG49VQ Süper Ultra Geniþ HDR Gaming Monitor — 49-inç 32:9 (3840 x 1080), 144Hz, FreeSync™ 2 HDR, DisplayHDR™ 400, DCI-P3: %90, Shadow Boost', 8581, 10, 3)
+INSERT INTO [tblProduct] VALUES ('ASUS 34" PG348Q Curved 5ms 100Hz IPS G-sync', '/img/ProductsImage/fde41016-4f54-4c0a-9ce9-a0f78f662f2f.jpg', 'ROG Swift PG348Q Oyuncu monitörü  Panoramik oyun deneyimi için 21:9 ekran oraný ile 34-inç Ultra-geniþ QHD (3440 x 1440) curved monitör', 7946, 9, 3)
+INSERT INTO [tblProduct] VALUES ('ASUS 35" XG35VQ FreeSync 3440x1440 4ms 100Hz', '/img/ProductsImage/fc5af90e-903e-4996-b4de-358aeb10d1b4.jpg', 'ROG Strix XG35VQ Kavisli Oyuncu Monitörü – 35 inç UWQHD (3440x1440), 100Hz, Adaptive-Sync(FreeSync™), Çok Düþük Hareket Bulanýklýðý (1ms MPRT)', 6357, 9, 3)
+INSERT INTO [tblProduct] VALUES ('ASUS 34" MX34VQ 1800R Curved 4Ms UWQHD', '/img/ProductsImage/8f083913-b7e2-4c31-8386-4d74d137012a.jpg', 'ASUS Designo Curve MX34VQ Ultra-geniþ Kavisli Monitör - 34 inç, UWQHD, 1800R Curvature, Çerçevesiz, Qi Kablosuz Þarj, Harman Kardon Ses, Flicker Free, Mavi Iþýk Filtresi', 5841, 0, 3)
+INSERT INTO [tblProduct] VALUES ('ASUS 27" PG278Q 1ms 144Hz 2K DP G-Sync 3D', '/img/ProductsImage/2432e084-6ac8-4b76-8167-563694a566f1.jpg', '144Hz tazeleme oraný ve 1ms tepki süresiyle Dünya''nýn ilk WQHD G-SYNC monitörü  1ms tepki süresiyle birleþen 27 inç, keskin 2560x1440 çözünürlükte görsellik, NVIDIA®G-SYNC™ teknolojisi', 5213, 9, 3)
+INSERT INTO [tblProduct] VALUES ('ASUS GeForce GTX1650 Phoenix OC 4GB', '/img/ProductsImage/9ba73f38-ec02-4226-92aa-fcb5f0c8c65a.jpg', '<h2><span>ASUS&nbsp;PH-GTX1650-O4G</span></h2>
+<p>ASUS Phoenix GeForce&reg; GTX 1650 OC edition 4GB GDDR5, PC oyunlarý d&uuml;nyasýna adým atmanýzý saðlýyor.</p>', 1372, 10, 2)
+
+INSERT INTO [tblAddress] VALUES ('Ev Adresi', 'Cumhuriyet Mah. Baþaran Cad. No:7/B Banaz', 'Uþak', 'Türkiye', 64500, 1)
+
+INSERT INTO [tblOrder] VALUES (1, CAST('2019-05-19' AS Date), 0)
+
+INSERT INTO [tblShoppingCart] VALUES (1, 15, 1, 5213, 1)
+INSERT INTO [tblShoppingCart] VALUES (1, 12, 1, 7946, 1)
+INSERT INTO [tblShoppingCart] VALUES (1, 10, 1, 1130, 1)
+INSERT INTO [tblShoppingCart] VALUES (1, 5, 1, 583, 1)
+INSERT INTO [tblShoppingCart] VALUES (1, 15, 1, 5213, NULL)
+INSERT INTO [tblShoppingCart] VALUES (1, 14, 3, 17523, NULL)
+
