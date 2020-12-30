@@ -1,0 +1,13 @@
+﻿@model List<SelectListItem>
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("SearchBox", "Home", FormMethod.Post))
+{
+
+    @Html.DropDownList("category", Model, htmlAttributes: new { @class = "input-select" });
+
+    @Html.TextBox("searching", null, new { @class = "input", placeholder = "Arama Yap" })
+    <button class="search-btn" type="submit">Ara</button>
+}

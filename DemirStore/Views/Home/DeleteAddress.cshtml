@@ -1,0 +1,72 @@
+﻿@model DemirStore.Models.tblAddress
+
+@{
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+}
+
+<h2>Adresi Sil</h2>
+
+<h3>Seçili Adresi Silmek İstediğinize Emin misiniz?</h3>
+<div>
+    <h4>tblAddress</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Zip)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Zip)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblUsers.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblUsers.Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm("DeleteAddress", "Home", FormMethod.Post)) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Sil" class="btn btn-default" /> |
+            @Html.ActionLink("Adreslerime Geri Dön", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,112 @@
+﻿@model DemirStore.Models.tblProduct
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("AddToCart", "Home", FormMethod.Post))
+{
+    @Html.HiddenFor(model => Model.Id)
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- Product main img -->
+                <div class="col-md-5 col-md-push-2">
+                    <div id="product-main-img">
+                        <div class="product-preview">
+                            <img src="@Model.PictureLink" alt="@Model.Name">
+                        </div>
+                    </div>
+                </div>
+                <!-- /Product main img -->
+                <!-- Product thumb imgs -->
+                <div class="col-md-2  col-md-pull-5">
+                    <div id="product-imgs">
+                        <div class="product-preview">
+                            <img src="@Model.PictureLink" alt="">
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /Product thumb imgs -->
+                <!-- Product details -->
+                <div class="col-md-5">
+                    <div class="product-details">
+                        <h2 class="product-name">@Model.Name</h2>
+                        <div>
+                            @if (Model.Stock > 0)
+                            {
+                                <h3 class="product-price">₺ @Model.Price</h3>
+                                <span class="product-available">Stokta Var</span>
+                            }
+                            else
+                            {
+                                <span class="product-available"><del>Stokta Yok</del></span>
+                            }
+                        </div>
+
+
+                        @if (Model.Stock > 0)
+                        {
+                            <div class="add-to-cart">
+                                <div class="qty-label">
+                                    Adet
+                                    <div class="input-number">
+                                        <input type="number" name="quantity" value="1">
+                                        <span class="qty-up">+</span>
+                                        <span class="qty-down">-</span>
+                                    </div>
+                                </div>
+                                @if (Session["userID"] != null)
+                                {
+                                    <button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Sepete Ekle</button>
+                                }
+                                else
+                                {
+                                    <button class="add-to-cart-btn" onclick="location.href='@Url.Action( "Login", "Home")'"><i class="fa fa-shopping-cart"></i>Sepete Ekle</button>
+                                }
+                            </div>
+                        }
+
+                        <ul class="product-links">
+                            <li>Kategori:</li>
+                            <li><a href="@Url.Action("Store", "Home", new { id = Model.CategoryId })">@ViewBag.categoryName</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+                <!-- /Product details -->
+                <!-- Product tab -->
+                <div class="col-md-12">
+                    <div id="product-tab">
+                        <!-- product tab nav -->
+                        <ul class="tab-nav">
+                            <li class="active">Ürün Açıklama</li>
+                        </ul>
+                        <!-- /product tab nav -->
+                        <!-- product tab content -->
+                        <div class="tab-content">
+                            <!-- tab1  -->
+                            <div id="tab1" class="tab-pane fade in active">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @Html.Raw(Model.Description)
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /tab1  -->
+                        </div>
+                        <!-- /product tab content  -->
+                    </div>
+                </div>
+                <!-- /product tab -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+}

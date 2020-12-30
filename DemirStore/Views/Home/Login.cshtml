@@ -1,0 +1,52 @@
+﻿@model DemirStore.Models.tblUsers
+
+@{
+    ViewBag.Title = "Giriş Yap";
+    ViewBag.Context = "Giriş Yap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="padding:50px; width:450px; text-align:center; border-style:solid; border-width:1px; border-color:darkgrey; margin-left:auto; margin-right:auto">
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <h2>Giriş Yap</h2>
+            <br />
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Mail Adresi", style = "Width:350px" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.Pswd, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Pswd, new { htmlAttributes = new { @class = "form-control", placeholder = "Şifre", style = "Width:350px" } })
+                    @Html.ValidationMessageFor(model => model.Pswd, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input style="width:350px" type="submit" value="Giriş Yap" class="btn btn-block" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    <label class="text-danger">@ViewBag.LoginErrorMessage</label>
+                </div>
+            </div>
+
+        </div>
+    }
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</div>

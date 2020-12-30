@@ -1,0 +1,48 @@
+﻿@model PagedList.IPagedList<DemirStore.Models.tblOrder>
+@using PagedList.Mvc;
+
+@{
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+}
+
+<h2>Onaylanmış Siparişlerim</h2>
+<hr/>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().AdressId)
+        </th>
+        <th>
+            Sipariş İşlemleri
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                #@Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tblAddress.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Sipariş Detayı", "OrderDetails", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="pagedList" style="float:right">
+    @Html.PagedListPager(Model, page => Url.Action("ShowVerifiedOrders", new { page = page }), PagedListRenderOptions.PageNumbersOnly)
+</div>

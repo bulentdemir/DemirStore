@@ -1,0 +1,72 @@
+﻿@model DemirStore.Models.tblUsers
+
+@{
+    ViewBag.Title = "Kullanıcı Sil";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Heading = "Kullanıcıyı Sil";
+}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <h3>Bu kullanıcıyı Silmek İstediğinize Emin misiniz?</h3>
+                <div>
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Surname)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Surname)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Email)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PhoneNumber)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.isVerified)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.isVerified)
+                        </dd>
+
+                    </dl>
+
+                    @using (Html.BeginForm("DeleteUser", "Admin", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-actions no-color">
+                            <input style="width:400px; height:50px" type="submit" value="Sil" class="btn btn-primary btn-icon-split" />
+                        </div>
+                        <div>
+                            @Html.ActionLink("Kullanıcılara geri dön", "Users")
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

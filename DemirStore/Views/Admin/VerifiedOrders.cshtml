@@ -1,0 +1,55 @@
+﻿@model PagedList.IPagedList<DemirStore.Models.tblOrder>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Onaylanmış Siparişler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Heading = "Onaylanmış Siparişler";
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Id)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Date)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().AdressId)</th>
+                            <th>Sipariş İşlemleri</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Id)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Date)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().AdressId)</th>
+                            <th>Sipariş İşlemleri</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>#@Html.DisplayFor(modelItem => item.Id)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                                <td>@Html.DisplayFor(modelItem => item.tblAddress.Name)</td>
+                                <td>
+                                    @Html.ActionLink("Düzenle", "OrderEdit", new { id = item.Id }) |
+                                    @Html.ActionLink("Sipariş Detayı", "OrderDetails", new { id = item.Id }) |
+                                    @Html.ActionLink("Sil", "OrderDelete", new { id = item.Id })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="pagedList" style="float:right">
+                    @Html.PagedListPager(Model, page => Url.Action("VerifiedOrders", new { page = page }), PagedListRenderOptions.PageNumbersOnly)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->

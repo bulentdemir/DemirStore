@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Hesap Ayarları";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <link rel="stylesheet" type="text/css" href="~/css/useraccount.css">
+
+    <div id="leftside">
+        <div id="account">
+            <li><b>Hesap İşlemleri</b></li>
+            <a href="@Url.Action("EditAccount","Home", new { id = (int)Session["userID"] })"><li class="settings">Hesap Ayarlarım</li></a>
+            <a href="@Url.Action("ChangePswd","Home",new { id = (int)Session["userID"] })"><li class="settings">Parolayı Değiştir</li></a>
+        </div>
+        <br />
+        <div id="account">
+            <li><b>Sipariş İşlemleri</b></li>
+            <a href="@Url.Action("ShowPendingOrders","Home")"><li class="settings">Bekleyen Siparişlerim</li></a>
+            <a href="@Url.Action("ShowVerifiedOrders","Home")"><li class="settings">Sipariş Geçmişim</li></a>
+        </div>
+        <br />
+        <div id="account">
+            <li><b>Adres İşlemleri</b></li>
+            <a href="@Url.Action("Address","Home")"><li class="settings">Adreslerim</li></a>
+            <a href="@Url.Action("AddAddress","Home")"><li class="settings">Adres Ekle</li></a>
+        </div>
+    </div>
+    <div id="container">
+        @RenderBody()
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<DemirStore.Controllers.ShowProducts>
+
+@{
+    Layout = null;
+}
+
+<div>
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <!-- section title -->
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h3 class="title">Yeni Ürünler</h3>
+
+                    </div>
+                </div>
+                <!-- /section title -->
+                <!-- Products tab & slick -->
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="products-tabs">
+                            <!-- tab -->
+                            <div id="tab1" class="tab-pane active">
+                                <div class="products-slick" data-nav="#slick-nav-1">
+                                    @foreach (var item in Model)
+                                    {
+                                        <!-- product -->
+                                        <div class="product">
+                                            <a href="@Url.Action("ProductDetails","Home",new { id = item.ProductId })">
+                                                <div class="product-img">
+                                                    <img src="@item.ProductPicture" alt="@item.ProductName">
+                                                    <div class="product-label">
+                                                        <span class="new">NEW</span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-body">
+                                                    <p class="product-category">@item.ProductCategoryName</p>
+                                                    <h3 class="product-name">
+                                                        @item.ProductName
+                                                    </h3>
+                                                    @if (item.ProductStock > 0)
+                                                    {
+                                                        <h4 class="product-price">₺ @item.ProductPrice</h4>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h4 class="product-price"><del>Stokta Yok</del></h4>
+                                                    }
+                                                </div>
+                                            </a>
+                                            @if (item.ProductStock > 0)
+                                            {
+                                                <div class="add-to-cart">
+                                                    @if (Session["userID"] != null)
+                                                    {
+                                                    <button class="add-to-cart-btn" onclick="location.href='@Url.Action("AddToCart", "Home", new { id = item.ProductId, quantity = 1 })'"><i class="fa fa-shopping-cart"></i>Sepete Ekle</button>
+                                                    }
+                                                    else
+                                                    {
+                                                    <button class="add-to-cart-btn" onclick="location.href='@Url.Action( "Login", "Home")'"><i class="fa fa-shopping-cart"></i>Sepete Ekle</button>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                        <!-- /product -->
+                                    }
+                                </div>
+                                <div id="slick-nav-1" class="products-slick-nav"></div>
+                            </div>
+                            <!-- /tab -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Products tab & slick -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+</div>

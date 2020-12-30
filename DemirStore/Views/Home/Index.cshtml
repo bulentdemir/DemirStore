@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Ana Sayfa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+@{ 
+    Html.RenderAction("ShowCategories", "Home");
+
+    Html.RenderAction("ShowProducts", "Home");
+}

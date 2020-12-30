@@ -1,0 +1,48 @@
+﻿@model DemirStore.Models.tblUsers
+
+@{
+    ViewBag.Title = "ChangePswd";
+    Layout = "~/Views/Shared/_UserAccount.cshtml";
+}
+
+<h2>Parolayı Değiştir</h2>
+<hr />
+
+@using (Html.BeginForm("ChangePswd", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Name)
+        @Html.HiddenFor(model => model.Surname)
+        @Html.HiddenFor(model => model.Email)
+        @Html.HiddenFor(model => model.PhoneNumber)
+        @Html.HiddenFor(model => model.isVerified)
+        @Html.HiddenFor(model => model.PswdSalt)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Pswd, htmlAttributes: new { @class = "col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Pswd, new { htmlAttributes = new { @class = "form-control", style = "Width:400px" } })
+                @Html.ValidationMessageFor(model => model.Pswd, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPswd, htmlAttributes: new { @class = "col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ConfirmPswd, new { htmlAttributes = new { @class = "form-control", style = "Width:400px" } })
+                @Html.ValidationMessageFor(model => model.ConfirmPswd, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input style="width:400px" type="submit" value="Kaydet" class="btn btn-block" />
+            </div>
+        </div>
+    </div>
+}
+

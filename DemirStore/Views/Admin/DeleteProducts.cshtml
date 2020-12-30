@@ -1,0 +1,82 @@
+﻿@model DemirStore.Models.tblProduct
+
+@{
+    ViewBag.Title = "Ürün Sil";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Heading = "Ürün Sil";
+}
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <h3>Bu Ürünü silmek istediğinize emin misiniz?</h3>
+                <div>
+                    <hr />
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.PictureLink)
+                        </dt>
+
+                        <dd>
+                            <img style="width:300px; height:300px" src="@Model.PictureLink" />
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+
+                        <dd>
+                            @Html.Raw(Model.Description)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Price)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Stock)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Stock)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.tblCategory.Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.tblCategory.Name)
+                        </dd>
+
+                    </dl>
+
+                    @using (Html.BeginForm("DeleteProducts", "Admin", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-actions no-color">
+                            <input style="width:400px; height:50px" type="submit" value="Sil" class="btn btn-primary btn-icon-split" />
+                        </div>
+                        <div>
+                            @Html.ActionLink("Ürünlere geri dön", "Products")
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

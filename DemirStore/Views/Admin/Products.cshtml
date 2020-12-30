@@ -1,0 +1,63 @@
+﻿@model PagedList.IPagedList<DemirStore.Models.tblProduct>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Ürünler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Heading = "Ürünler";
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Name)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().PictureLink)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Description)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Price)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Stock)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().CategoryId)</th>
+                            <th>Ürün İşlemleri</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Name)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().PictureLink)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Description)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Price)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Stock)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().CategoryId)</th>
+                            <th>Ürün İşlemleri</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td><img width="50" height="50" src="@item.PictureLink" /></td>
+                                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                <td>₺ @Html.DisplayFor(modelItem => item.Price)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Stock)</td>
+                                <td>@Html.DisplayFor(modelItem => item.tblCategory.Name)</td>
+                                <td>
+                                    @Html.ActionLink("Düzenle", "EditProducts", new { id = item.Id }) |
+                                    @Html.ActionLink("Sil", "DeleteProducts", new { id = item.Id })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="pagedList" style="float:right">
+                    @Html.PagedListPager(Model, page => Url.Action("Products", new { page = page }), PagedListRenderOptions.PageNumbersOnly)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->

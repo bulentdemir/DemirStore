@@ -1,0 +1,99 @@
+﻿@model DemirStore.Models.tblOrder
+@using DemirStore.Controllers
+
+@{
+    ViewBag.Title = "Siparişi Düzenle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Heading = "Siparişi Düzenle";
+}
+
+@using (Html.BeginForm("OrderEdit", "Admin", FormMethod.Post))
+{
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.AdressId)
+                    @Html.HiddenFor(model => model.Date)
+                    <div>
+                        <div id="orderinformation" style="float:left; width:400px">
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    <h4>Sipariş Bilgileri</h4>
+                                </dt>
+
+                                <dd>
+                                    <b>@Html.DisplayNameFor(model => model.Id):</b> #@Html.DisplayFor(model => model.Id) <br />
+                                    <b>@Html.DisplayNameFor(model => model.Date):</b> @Html.DisplayFor(model => model.Date) <br />
+                                    <b>@Html.DisplayNameFor(model => model.isShipped):</b> @Html.EditorFor(model => model.isShipped)
+                                </dd>
+                                <dt>
+                                    <br />
+                                    <h4>Kullanıcı Bilgileri</h4>
+                                </dt>
+                                <dd>
+                                    <b>Ad - Soyad: </b> @ViewBag.orderUser.Name @ViewBag.orderUser.Surname<br />
+                                    <b>Mail adresi: </b> @ViewBag.orderUser.Email <br />
+                                    <b>Telefon Numarası: </b> @ViewBag.orderUser.PhoneNumber
+                                </dd>
+                                <dt>
+                                    <br />
+                                    <h4>@Html.DisplayNameFor(model => model.AdressId)</h4>
+                                </dt>
+                                <dd>
+                                    <b>Adres Adı: </b>@ViewBag.orderAddress.Name<br />
+                                    <b>Adres: </b>@ViewBag.orderAddress.Address<br />
+                                    <b>Şehir: </b>@ViewBag.orderAddress.City<br />
+                                    <b>Ülke: </b>@ViewBag.orderAddress.Country<br />
+                                    <b>Posta Kodu: </b>@ViewBag.orderAddress.Zip
+                                </dd>
+                            </dl>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input style="width:400px; height:50px" type="submit" value="Kaydet" class="btn btn-primary btn-icon-split" />
+                                </div>
+                                <div>
+                                    @Html.ActionLink("Siparişlere Geri Dön", "Orders")
+                                </div>
+                            </div>
+
+                        </div>
+                        <div id="productsinorder" style="float:right; border-style:solid; border-width:1px; border-color:darkgrey; padding:10px; width: 550px">
+                            <h4>Satın Alınan Ürünler</h4>
+                            <table class="table">
+                                <tr>
+                                    <th>Ürün Adı</th>
+                                    <th>Ürün Resmi</th>
+                                    <th>Fiyatı</th>
+                                    <th>Adet</th>
+                                    <th>Toplam Tutar</th>
+                                </tr>
+                                @{
+                                    decimal sum = 0;
+                                }
+                                @foreach (OrderProducts item in (List<OrderProducts>)ViewBag.orderProducts)
+                                {
+                                    sum += item.ProductPrice * item.ProductQuantity;
+                                    <tr>
+                                        <td>@item.ProductName</td>
+                                        <td><img width="50" height="50" src="@item.ProductPicture" /></td>
+                                        <td>₺ @item.ProductPrice</td>
+                                        <td>@item.ProductQuantity</td>
+                                        <td>@(item.ProductPrice * item.ProductQuantity)</td>
+                                    </tr>
+
+                                }
+                                <tr>
+                                    <td align="right" colspan="6"><b>Toplam Fiyat: </b>₺ @sum</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

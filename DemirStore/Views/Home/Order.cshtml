@@ -1,0 +1,113 @@
+﻿@model DemirStore.Models.tblOrder
+
+@using DemirStore.Controllers
+
+@{
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Home/Login");
+    }
+}
+@{
+    ViewBag.Title = "Sipariş Ver";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sipariş Ver</h2>
+
+@using (Html.BeginForm("Order", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <div class="col-md-7">
+                    <!-- Billing Details -->
+                    <div class="billing-details">
+                        <div class="section-title">
+                            <h3 class="title">Sipariş Adresi</h3>
+                            <br/>
+                        </div>
+                        <div class="form-group">
+                            <h5 class="title">Gelmesini istediğiniz adres ismini seçin</h5>
+                            @Html.DropDownList("AdressId", null, htmlAttributes: new { @class = "form-control" })
+                        </div>
+                        @*<div class="form-group">
+                            </div>
+                            <div class="form-group">
+                            </div>
+                            <div class="form-group">
+                            </div>
+                            <div class="form-group">
+                            </div>
+                            <div class="form-group">
+                            </div>*@
+                        <div>
+                            @Html.ActionLink("Sepete Git", "Cart") | @Html.ActionLink("Yeni Adres Ekle", "AddAddress")
+                        </div>
+                    </div>
+                    <!-- /Billing Details -->
+
+
+                </div>
+
+                <!-- Order Details -->
+                <div class="col-md-5 order-details">
+                    <div class="section-title text-center">
+                        <h3 class="title">Siparişiniz</h3>
+                    </div>
+                    <div class="order-summary">
+                        <div class="order-col">
+                            <div><strong>Ürünler</strong></div>
+                            <div><strong>TOPLAM</strong></div>
+                        </div>
+                        <div class="order-products">
+                            @{
+                                decimal sum = 0;
+                                int subQty = 0;
+                            }
+                            @foreach (ShoppingCart item in (List<ShoppingCart>)Session["cart"])
+                            {
+                                sum += item.Product.Price * item.Quantity;
+                                subQty += item.Quantity;
+                                <div class="order-col">
+                                    <div>@item.Quantity x @item.Product.Name</div>
+                                    <div>₺ @(item.Quantity * item.Product.Price)</div>
+                                </div>
+                            }
+                        </div>
+                        <div class="order-col">
+                            <div>Kargo Ücreti</div>
+                            <div><strong>Ücretsiz</strong></div>
+                        </div>
+                        <div class="order-col">
+                            <div><strong>Toplam</strong></div>
+                            <div><strong class="order-total">₺ @sum</strong></div>
+                        </div>
+                    </div>
+                    <div class="payment-method">
+                        <div class="input-radio">
+                            <input type="radio" name="payment" id="payment-1" checked>
+                            <label for="payment-1">
+                                <span></span>
+                                Kapıda Ödeme
+                            </label>
+                            <div class="caption">
+                                <p>Sitemizde sadece kapıda ödeme yapılmaktadır.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="primary-btn order-submit" value="Sipariş Ver" type="submit" />
+                </div>
+                <!-- /Order Details -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+}

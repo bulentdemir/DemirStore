@@ -1,0 +1,122 @@
+﻿@model PagedList.IPagedList<DemirStore.Models.tblProduct>
+@using PagedList.Mvc;
+
+@using DemirStore.Models
+@{
+    ViewBag.Title = "Store";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- ASIDE -->
+            <div id="aside" class="col-md-3">
+                <!-- aside Widget -->
+                <div class="aside">
+                    <h3 class="aside-title">Kategoriler</h3>
+                    <div class="checkbox-filter">
+                        @foreach (var category in ViewBag.categories)
+                        {
+                            <div class="input-checkbox">
+                                <label>
+                                    <span></span>
+                                    <a href="@Url.Action("Store","Home",new { id = category.Id })">@category.Name</a>
+                                    <small></small>
+                                </label>
+                            </div>
+                        }
+
+                    </div>
+                    <hr />
+                </div>
+                <!-- /aside Widget -->
+
+            </div>
+            <!-- /ASIDE -->
+            <!-- STORE -->
+            <div id="store" class="col-md-9">
+                <!-- store top filter -->
+                <!-- store products -->
+                <div class="row">
+                    @{
+                        int i = 0;
+                    }
+                    @if (Model.Count() == 0)
+                    {
+                        <p>Aramanızla eşleşen ürün bulunamadı.</p>
+                    }
+                    else
+                    {
+                        foreach (var product in Model)
+                        {
+                            using (DemirStoreDBEntities dbModel = new DemirStoreDBEntities())
+                            {
+                                string productCategory = dbModel.tblCategory.FirstOrDefault(x => x.Id == product.CategoryId).Name.ToString();
+                                i++;
+                                <!-- product -->
+                                <div class="col-md-4 col-xs-6">
+                                    <div class="product">
+                                        <a href="/Home/ProductDetails/@product.Id">
+                                            <div class="product-img">
+                                                <img src="@product.PictureLink" alt="@product.Name">
+                                            </div>
+                                            <div class="product-body">
+                                                <p class="product-category">@productCategory</p>
+                                                <h3 class="product-name">@product.Name</h3>
+                                                @if (product.Stock > 0)
+                                                {
+                                                    <h4 class="product-price">₺ @product.Price</h4>
+                                                }
+                                                else
+                                                {
+                                                    <h4 class="product-price"><del>Stokta Yok</del></h4>
+                                                }
+                                            </div>
+                                        </a>
+                                        @if (product.Stock > 0)
+                                        {
+                                            <div class="add-to-cart">
+                                                @if (Session["userID"] != null)
+                                                {
+                                                    <button class="add-to-cart-btn" onclick="location.href='@Url.Action("AddToCart", "Home", new { id = product.Id, quantity = 1 })'"><i class="fa fa-shopping-cart"></i>Sepete Ekle</button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="add-to-cart-btn" onclick="location.href='@Url.Action( "Login", "Home")'"><i class="fa fa-shopping-cart"></i>Sepete Ekle</button>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                if (i == 2 || i == 3 || i == 4 || i == 6 || i == 8)
+                                {
+                                    <div class="clearfix visible-sm visible-xs"></div>
+                                }
+                                <!-- /product -->
+                            }
+                        }
+                    }
+
+                </div>
+                <br />
+                <!-- /store products -->
+                <!-- store bottom filter -->
+                <div class="store-filter clearfix">
+                    <span class="store-qty">Bir sayfada 9 ürün listelenmektedir.</span>
+                    <div class="pagedList" style="float:right">
+                        @Html.PagedListPager(Model, page => Url.Action("Store", new { page = page }), PagedListRenderOptions.PageNumbersOnly)
+                    </div>
+                </div>
+                <!-- /store bottom filter -->
+            </div>
+            <!-- /STORE -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->

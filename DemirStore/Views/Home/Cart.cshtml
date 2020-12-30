@@ -1,0 +1,69 @@
+﻿@using DemirStore.Controllers;
+
+@{
+    if(Session["userID"] == null)
+    {
+        Response.Redirect("~/Home/Login");
+    }
+    ViewBag.Title = "Sepetim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sepetim</h2>
+
+<div>
+    @using (Html.BeginForm("UpdateProductSCart", "Home", FormMethod.Post))
+    {
+    <table class="table">
+        <tr>
+            <th>Ürün Adı</th>
+            <th>Ürün Resmi</th>
+            <th>Fiyatı</th>
+            <th>Adet</th>
+            <th>Toplam Tutar</th>
+            <th>İşlemler</th>
+        </tr>
+        @{
+                decimal sum = 0;
+        }
+        @if (Session["cart"] != null)
+        {
+            foreach (ShoppingCart item in (List<ShoppingCart>)Session["cart"])
+            {
+                sum += item.Product.Price * item.Quantity;
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td><img width="50" height="50" src="@item.Product.PictureLink" /></td>
+                    <td>₺ @item.Product.Price</td>
+                    <td>
+                        <div class="add-to-cart" style="width:70px">
+                            <div class="qty-label">
+                                <div class="input-number">
+                                    <input type="number" name="quantity" value="@item.Quantity">
+                                    <span class="qty-up">+</span>
+                                    <span class="qty-down">-</span>
+                                </div>
+                            </div>
+                            <div/>
+                    </td>
+                    <td>₺ @(item.Product.Price * item.Quantity)</td>
+                    <td>
+                        <input type="submit" value="Güncelle" class="btn btn-default" /> | 
+                        <input type="button" value="Sil" class="btn btn-default" onclick="window.location.href='@Url.Action("DeleteProductSCart","Home", new { id = item.Product.Id })'" />
+                    </td>
+            </tr>
+        }
+        <tr>
+            <td align="right" colspan="6"><b>Toplam Fiyat: </b>₺ @sum</td>
+        </tr>
+    }
+    </table>
+    }
+</div>
+    <br />
+    <div id="continueShopping" style="float:left">
+        @Html.ActionLink("Alışverişe Devam Et", "Index", "Home")
+    </div>
+    <div id="order" style="float:right">
+        @Html.ActionLink("Sipariş Ver", "Order", "Home")
+    </div>
